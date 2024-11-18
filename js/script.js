@@ -4,6 +4,8 @@ const username = "lucinda-d";
 const repoList = document.querySelector(".repo-list");
 const repoSection = document.querySelector(".repos");
 const repoData = document.querySelector(".repo-data");
+const backToRepoButton = document.querySelector(".view-repos");
+const filterInput = document.querySelector(".filter-repos");
 
 //fetch API JSON data
 const grabProfileInfo = async function () {
@@ -86,6 +88,7 @@ const specifyRepo = async function (repoName) {
 };
 
 //create a function to display repo info
+filterInput.classList.remove("hide"); //-displays the input element(searchbox)
 const displaySpecificRepo = function (repoInfo, languages) {
   repoData.innerHTML = "";
   const div = document.createElement("div");
@@ -102,3 +105,28 @@ const displaySpecificRepo = function (repoInfo, languages) {
   repoData.classList.remove("hide");
   repoSection.classList.add("hide");
 };
+
+//Add a click event to the "Back Button"
+backToRepoButton.addEventListener("click", function () {
+  repoSection.classList.remove("hide");
+  repoData.classList.add("hide");
+  backToRepoButton.classList.add("hide");
+});
+
+//Add an Input Event to the Search Box
+filterInput.addEventListener("input", function (e) {
+  const searchText = e.target.value;
+  // console.log(searchText);//testing the input to see if it's been captured.
+  const repos = document.querySelectorAll(".repo");
+  const lowercaseSearchText = searchText.toLowerCase();
+
+  //looping through each repos inside repos element
+  for (const repo of repos) {
+    const repoLowerText = repo.innerText.toLowerCase();
+    if (repoLowerText.includes(lowercaseSearchText)) {
+      repo.classList.remove("hide");
+    } else {
+      repo.classList.add("hide");
+    }
+  }
+});
